@@ -258,6 +258,7 @@ void mCheatRemoveSet(struct mCheatDevice* device, struct mCheatSet* cheats) {
 		return;
 	}
 	mCheatSetsShift(&device->cheats, i, 1);
+	_unpatchROM(device, cheats);
 	if (cheats->remove) {
 		cheats->remove(cheats, device);
 	}

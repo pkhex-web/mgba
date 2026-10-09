@@ -1052,7 +1052,12 @@ bool retro_unserialize(const void* data, size_t size) {
 }
 
 void retro_cheat_reset(void) {
-	mCheatDeviceClear(core->cheatDevice(core));
+	struct mCheatDevice* device = core->cheatDevice(core);
+	while (mCheatSetsSize(&device->cheats)) {
+		struct mCheatSet* cheatSet = *mCheatSetsGetPointer(&device->cheats, 0);
+		mCheatRemoveSet(device, cheatSet);
+		mCheatSetDeinit(cheatSet);
+	}
 }
 
 void retro_cheat_set(unsigned index, bool enabled, const char* code) {
